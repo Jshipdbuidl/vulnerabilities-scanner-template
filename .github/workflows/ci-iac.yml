@@ -49,7 +49,7 @@ jobs:
             exit-code: '1'
             ignore-unfixed: true
             severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL' 
-            
+
   insecure-cf:
     name: Scan Insecure Cloudformation patterns
     runs-on: ubuntu-latest
@@ -61,7 +61,7 @@ jobs:
         uses: stelligent/cfn_nag@master
         with:
           input_path: cfn
-          extra_args: --fail-on-warnings
+          extra_args: --fail-on-warnings --deny-list-path .cfnnagcfg.yml
 
       - name: Fail if cfn_nag scan contains failures, warnings
         # sum cfn_nag failures, warnigns and return it as exit code
