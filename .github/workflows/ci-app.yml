@@ -82,7 +82,7 @@
           env:
             REGISTRY: ghcr.io
             IMAGE_NAME: ${{ github.repository }}
-            ECR_REPOSITORY: Jshipdbuidl #${{ github.repository }}
+            ECR_REPOSITORY: jshipdbuidl #${{ github.repository }}
             IMAGE_TAG: ${{ env.IMAGE_TAG }}
           run: |
             echo REGISTRY: $REGISTRY
