@@ -82,7 +82,7 @@
           env:
             REGISTRY: ghcr.io
             IMAGE_NAME: ${{ github.repository }}
-            ECR_REPOSITORY: ${{ github.repository }}
+            ECR_REPOSITORY: Jshipdbuidl #${{ github.repository }}
             IMAGE_TAG: ${{ env.IMAGE_TAG }}
           run: |
             echo REGISTRY: $REGISTRY
@@ -101,3 +101,26 @@
             name: docker-image
             path: /tmp/docker-image.tar
             retention-days: 1
+
+    docker-grype:
+      name: Grype (Anchore) Docker Scan
+      runs-on: ubuntu-latest
+      needs: [docker-build]
+      steps:
+        - name: Download artifact
+          uses: actions/download-artifact@v2
+          with:
+            name: docker-image
+            path: /tmp
+
+        - name: Load Docker image
+          run: |
+            docker load --input /tmp/docker-image.tar
+
+        - name: Scan image wih Grype (Anchore)
+          id: scan-image
+          uses: anchore/scan-action@v3
+          with:
+            image: "${{ needs.docker-build.outputs.full_docker_image_tag }}"
+            output-format: table
+            fail-build: true
